@@ -19,13 +19,13 @@ import * as Game from "./game.js";
    ============================================= */
 
 const FIREBASE_CONFIG = {
-  apiKey: "PASTE_YOUR_API_KEY_HERE",
-  authDomain: "PASTE_YOUR_PROJECT_ID_HERE.firebaseapp.com",
-  databaseURL: "https://PASTE_YOUR_PROJECT_ID_HERE-default-rtdb.firebaseio.com",
-  projectId: "PASTE_YOUR_PROJECT_ID_HERE",
-  storageBucket: "PASTE_YOUR_PROJECT_ID_HERE.appspot.com",
-  messagingSenderId: "PASTE_YOUR_SENDER_ID_HERE",
-  appId: "PASTE_YOUR_APP_ID_HERE",
+  apiKey: "AIzaSyCVoT1prV36dogEfuCUku48lQMIC8UBCLQ",
+  authDomain: "pig-game-online.firebaseapp.com",
+  databaseURL: "https://pig-game-online-default-rtdb.firebaseio.com",
+  projectId: "pig-game-online",
+  storageBucket: "pig-game-online.firebasestorage.app",
+  messagingSenderId: "276078031386",
+  appId: "1:276078031386:web:872bf3c27ea0b9344e57a3",
 };
 
 /* =============================================
