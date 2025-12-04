@@ -6,9 +6,14 @@ import { generateRoomCode, generateInviteLink, getRoomCodeFromURL, updateURLWith
 import * as UI from './ui.js';
 import * as Game from './game.js';
 
-// Firebase configuration
-// ⚠️ IMPORTANT: Replace with your own Firebase config!
-const firebaseConfig = {
+/* =============================================
+   🔥 FIREBASE CONFIGURATION
+   =============================================
+   Replace the values below with your Firebase config.
+   Get these from: Firebase Console → Project Settings → Your Apps
+   ============================================= */
+
+const FIREBASE_CONFIG = {
   apiKey: "AIzaSyCVoT1prV36dogEfuCUku48lQMIC8UBCLQ",
   authDomain: "pig-game-online.firebaseapp.com",
   databaseURL: "https://pig-game-online-default-rtdb.firebaseio.com",
@@ -17,6 +22,10 @@ const firebaseConfig = {
   messagingSenderId: "276078031386",
   appId: "1:276078031386:web:872bf3c27ea0b9344e57a3"
 };
+
+/* =============================================
+   END OF FIREBASE CONFIGURATION
+   ============================================= */
 
 // Module state
 let db = null;
@@ -33,10 +42,17 @@ let cleanupListeners = [];
  */
 export function initFirebase() {
   try {
-    // Check if Firebase is loaded
+    // Check if Firebase SDK is loaded
     if (typeof firebase === 'undefined') {
       console.error('Firebase SDK not loaded');
-      UI.showToast('Firebase not loaded. Online mode unavailable.', 'error');
+      UI.showToast('Firebase not loaded. Check your internet connection.', 'error');
+      return false;
+    }
+
+    // Check if config is still placeholder
+    if (FIREBASE_CONFIG.apiKey === "PASTE_YOUR_API_KEY_HERE") {
+      console.error('Firebase config not set up');
+      UI.showToast('Firebase not configured. See js/online.js', 'error');
       return false;
     }
     
@@ -48,11 +64,11 @@ export function initFirebase() {
     db = firebase.database();
     initialized = true;
     
-    console.log('Firebase initialized successfully');
+    console.log('✅ Firebase initialized successfully');
     return true;
   } catch (error) {
     console.error('Firebase initialization error:', error);
-    UI.showToast('Failed to initialize online features', 'error');
+    UI.showToast('Failed to initialize online features: ' + error.message, 'error');
     return false;
   }
 }
@@ -121,7 +137,7 @@ export async function createRoom() {
     return roomCode;
   } catch (error) {
     console.error('Create room error:', error);
-    UI.showToast('Failed to create room', 'error');
+    UI.showToast('Failed to create room: ' + error.message, 'error');
     return null;
   }
 }
@@ -191,7 +207,7 @@ export async function joinRoom(roomCode) {
     return true;
   } catch (error) {
     console.error('Join room error:', error);
-    UI.showToast('Failed to join room', 'error');
+    UI.showToast('Failed to join room: ' + error.message, 'error');
     return false;
   }
 }
@@ -401,9 +417,6 @@ export async function leaveRoom() {
     // Update connection status
     const playerPath = isHost ? 'host' : 'guest';
     await roomRef.child(`${playerPath}/connected`).set(false);
-    
-    // If host, optionally delete room
-    // await roomRef.remove(); // Uncomment to delete room when host leaves
     
     roomRef = null;
     currentRoom = null;
