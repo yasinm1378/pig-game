@@ -1,236 +1,304 @@
-# 🐷 The Pig Game 🎲
+# 🐷 Pig Game Deluxe
 
-> *Because life's too short to not gamble with imaginary pigs*
+> *Because life's too short to not gamble with imaginary pigs!*
 
-[![Made with Love](https://img.shields.io/badge/Made%20with-Love-ff69b4.svg)](https://github.com/yasinm1378/pig-game)
-[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
-[![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
+A modern, feature-rich implementation of the classic Pig dice game. Play locally, against AI, or challenge friends online with real-time multiplayer!
 
-Welcome to **The Pig Game** – where fortune favors the bold, and pigs somehow became associated with dice rolling. This isn't just any dice game; it's a battle of wits, nerves, and questionable decision-making skills!
+![Pig Game Screenshot](assets/screenshot.png)
 
-## 🎯 What's This All About?
+## ✨ Features
 
-The Pig Game is a classic dice game reimagined for the digital age. Two players compete in a high-stakes showdown where greed battles caution, and that innocent little die decides your fate. One wrong roll and *poof* – your points vanish faster than your New Year's resolutions.
+- 🎲 **Classic Mode** - Traditional two-player local gameplay
+- ⚡ **Speed Mode** - 30-second turn timer for intense gameplay
+- 🤖 **vs AI** - Four difficulty levels with unique strategies
+- 🌐 **Online Multiplayer** - Real-time play with friends via invite links
+- 📊 **Statistics** - Track games played, wins, and streaks (persisted locally)
+- ⌨️ **Keyboard Controls** - Space to roll, Enter to hold, N for new game
+- 🎨 **Beautiful UI** - Smooth animations and responsive design
 
-Think of it as Vegas, but with fewer lights and more oinking.
+## 🎮 How to Play
 
-## 🎮 How to Play (aka The Sacred Rules)
-
-### The Basics
-1. **Two players take turns** rolling a single die (Player 1 vs. Player 2 – may the luckiest win!)
-2. **Each roll** gets added to your **current score** for that turn
-3. **But here's the twist** 🌪️: Roll a **1** and you lose EVERYTHING from that turn
-4. **Feel lucky?** Keep rolling to stack up those points
-5. **Feeling nervous?** Hit **HOLD** to bank your current score to your total
-6. **First to 100 points** wins! 🏆 (Or whatever winning score you set)
-
-### The Strategy
-- **Greedy pigs get slaughtered** 🔪 – Roll too many times and that 1 will haunt you
-- **Scared pigs starve** 🍂 – Play it too safe and you'll never reach 100
-- **Smart pigs win** 🧠 – Find that sweet spot between risk and reward
-
-> *"To roll or not to roll? That is the question." - William Shakes-pig-eare*
-
-## 🚀 Quick Start
-
-Ready to join the pig party? Here's how:
-
-### Option 1: The Lightning-Fast Way ⚡
-```bash
-# Just open index.html in your browser. Yes, it's that easy.
-open index.html
-# or double-click it like it's 1999
-```
-
-### Option 2: The Developer Way 💻
-```bash
-# Clone this bad boy
-git clone https://github.com/yasinm1378/pig-game.git
-
-# Navigate to the farm
-cd pig-game
-
-# Open in your favorite browser
-# Chrome, Firefox, Safari, Opera, Edge... we don't judge
-```
-
-### Option 3: The "I'm Fancy" Way 🎩
-```bash
-# Use a local server (because why not?)
-npx serve
-# or
-python -m http.server 8000
-# Then open http://localhost:8000
-```
-
-## 🎨 Features That'll Make You Squeal
-
-- ✨ **Sleek UI**: Clean, modern design that doesn't hurt your eyes
-- 🎲 **Realistic Dice**: Digital dice that actually looks like it's rolling
-- 🔊 **Sound Effects**: (If implemented) Satisfying clicks and cheers
-- 📱 **Responsive**: Play on desktop, tablet, or phone – we're inclusive like that
-- 🎯 **Score Tracking**: Keep tabs on who's winning (or losing spectacularly)
-- 🔄 **New Game Button**: Start fresh after your devastating loss
-- 🎨 **Visual Feedback**: Know whose turn it is without squinting
-- 🏆 **Winner Animation**: Celebrate in style when you crush your opponent
-
-## 🛠️ Tech Stack
-
-Built with the holy trinity of web development:
-
-- **HTML5** – The bones
-- **CSS3** – The beauty
-- **Vanilla JavaScript** – The brains (no frameworks needed!)
-
-No npm packages. No build tools. No webpack confusion. Just pure, unadulterated code.
-
-## 🎓 Game Rules (The Fine Print)
-
-### Winning Condition
-First player to reach **100 points** (or more) wins the game!
-
-### Detailed Gameplay
-1. **Starting**: Player 1 goes first (because someone has to)
-2. **Rolling**: Click "Roll Dice" to roll a single die
-   - Roll 2-6: Points added to your current score ✅
-   - Roll 1: Current score goes to 0, turn ends ❌
-3. **Holding**: Click "Hold" to:
-   - Add current score to your total score
-   - End your turn
-   - Pass the dice to your opponent
-4. **Winning**: First to 100 total points wins!
-5. **New Game**: Reset everything and start the rivalry anew
-
-### Pro Tips 🎯
-- **The Rule of 20**: Many players hold when they reach 20+ points per turn
-- **Early Aggression**: Be aggressive early; play it safe when ahead
-- **Mind Games**: Trash talk is encouraged (but keep it friendly!)
-- **The Comeback**: Down 80-20? Time to channel your inner gambling addiction
-
-## 🎨 Screenshots
-
-```
-┌─────────────────────────────────────────┐
-│                                         │
-│     PLAYER 1          🎲          PLAYER 2
-│       85                            42   │
-│    ┌────────┐                  ┌────────┐
-│    │CURRENT │                  │CURRENT │
-│    │   14   │                  │   0    │
-│    └────────┘                  └────────┘
-│                                         │
-│         [🎲 ROLL DICE]                  │
-│         [💰 HOLD]                       │
-│         [🔄 NEW GAME]                   │
-│                                         │
-└─────────────────────────────────────────┘
-```
+1. **Roll the dice** - Click "Roll" or press `Space`
+2. **Accumulate points** - Each roll adds to your current score
+3. **Watch out for 1s!** - Rolling a 1 loses your current score
+4. **Hold to bank** - Click "Hold" or press `Enter` to save your points
+5. **First to 100 wins!** - (Customizable winning score)
 
 ## 🏗️ Project Structure
 
 ```
 pig-game/
-│
-├── index.html          # The stage where magic happens
-├── style.css           # Making it pretty since day 1
-├── script.js           # Where the sausage is made
-├── dice-1.png          # The cursed one
-├── dice-2.png          # 
-├── dice-3.png          # The dice images
-├── dice-4.png          # 
-├── dice-5.png          # 
-├── dice-6.png          # The golden ticket
-└── README.md           # You are here! 📍
+├── index.html          # Main HTML file
+├── css/
+│   └── styles.css      # All styling
+├── js/
+│   ├── main.js         # Entry point & event handling
+│   ├── game.js         # Core game logic
+│   ├── ui.js           # DOM manipulation
+│   ├── ai.js           # AI opponent logic
+│   ├── online.js       # Firebase multiplayer
+│   └── utils.js        # Helper functions
+├── assets/             # Images, sounds (if any)
+└── README.md           # You are here!
 ```
 
-## 🤝 Contributing
+## 🚀 Quick Start (Local Play)
 
-Found a bug? Want to add a feature? Have a pig-related pun?
+Just open `index.html` in your browser! No build step required.
 
-1. Fork it
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+```bash
+# Clone the repo
+git clone https://github.com/yasinm1378/pig-game.git
+cd pig-game
 
-### Ideas for Contributions
-- 🎨 Add themes (Dark mode, Neon pig, Cyberpig 2077)
-- 🎵 Add sound effects
-- 🤖 Create an AI opponent
-- 🌐 Add multiplayer support
-- 📊 Add statistics tracking
-- 🏆 Add achievements system
-- 🎮 Add game modes (speed pig, extreme pig, zen pig)
-
-## 🐛 Known Issues
-
-- None yet! (Or we're just really good at hiding them)
-- If you find any, please create an issue
-
-## 📚 What I Learned
-
-This project is perfect for learning:
-- ✅ DOM Manipulation
-- ✅ Event Listeners
-- ✅ Game State Management
-- ✅ CSS Animations
-- ✅ JavaScript Logic
-- ✅ How pigs became associated with dice games (still unclear)
-
-## 🎭 Fun Facts
-
-- The Pig Game dates back to at least 1945 (older than your grandma's recipes)
-- Mathematically, you should hold at 20 points (but where's the fun in that?)
-- The probability of rolling a 1 is 16.67% (trust the math, not your feelings)
-- This game has caused more friendships to end than Monopoly
-- Pigs can't actually roll dice (they lack opposable thumbs)
-
-## 📜 License
-
-This project is licensed under the MIT License – which means you can do whatever you want with it. Build upon it, sell it, trade it for actual pigs, we don't care!
-
-## 🙏 Acknowledgments
-
-- Jonas Schmedtmann for inspiring countless JavaScript learners
-- The ancient inventors of the Pig Game (whoever you were)
-- Coffee ☕ – The real MVP
-- Stack Overflow – For obvious reasons
-- My rubber duck 🦆 – Best debugging partner ever
-
-## 💬 Final Words
-
-Remember: In the game of pigs, you either win or you roll a 1.
-
-Now stop reading and start playing! 🎲
+# Open in browser
+open index.html
+# or use a local server
+npx serve
+```
 
 ---
 
-<div align="center">
+## 🔥 Firebase Setup (For Online Multiplayer)
 
-**Made with 💖 and questionable life choices**
+To enable online multiplayer, you need to set up Firebase Realtime Database. Follow these steps:
 
-[⭐ Star this repo](https://github.com/yasinm1378/pig-game) if you're feeling generous!
+### Step 1: Create a Firebase Project
 
-*"May your rolls be high and your ones be few"* 🐷
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Click **"Create a project"** (or "Add project")
+3. Enter a project name (e.g., "pig-game-online")
+4. Disable Google Analytics (optional, not needed for this project)
+5. Click **"Create project"**
 
-</div>
+### Step 2: Enable Realtime Database
+
+1. In your Firebase project, click **"Build"** in the left sidebar
+2. Select **"Realtime Database"**
+3. Click **"Create Database"**
+4. Choose a location (pick the closest to your users)
+5. Start in **"Test mode"** (we'll secure it later)
+6. Click **"Enable"**
+
+### Step 3: Get Your Firebase Config
+
+1. Click the **gear icon** ⚙️ next to "Project Overview"
+2. Select **"Project settings"**
+3. Scroll down to **"Your apps"**
+4. Click the **web icon** `</>`
+5. Register your app with a nickname (e.g., "pig-game-web")
+6. You'll see a config object like this:
+
+```javascript
+const firebaseConfig = {
+  apiKey: "AIzaSyB...",
+  authDomain: "pig-game-online.firebaseapp.com",
+  databaseURL: "https://pig-game-online-default-rtdb.firebaseio.com",
+  projectId: "pig-game-online",
+  storageBucket: "pig-game-online.appspot.com",
+  messagingSenderId: "123456789",
+  appId: "1:123456789:web:abc123"
+};
+```
+
+### Step 4: Add Config to Your Project
+
+1. Open `js/online.js`
+2. Find the `FIREBASE_CONFIG` object at the top
+3. Replace the placeholder values with your actual config:
+
+```javascript
+const FIREBASE_CONFIG = {
+  apiKey: "YOUR_ACTUAL_API_KEY",
+  authDomain: "your-project.firebaseapp.com",
+  databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+  projectId: "your-project",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "your-sender-id",
+  appId: "your-app-id"
+};
+```
+
+### Step 5: Set Up Database Security Rules
+
+1. In Firebase Console, go to **Realtime Database** → **Rules**
+2. Replace the rules with:
+
+```json
+{
+  "rules": {
+    "rooms": {
+      "$roomId": {
+        ".read": true,
+        ".write": true,
+        // Auto-delete rooms after 30 minutes of inactivity
+        ".validate": "newData.hasChildren(['code', 'createdAt'])"
+      }
+    }
+  }
+}
+```
+
+> ⚠️ **Note:** These rules allow anyone to read/write rooms. For production, add authentication!
+
+### Step 6: Test Online Mode
+
+1. Open your game in a browser
+2. Click **"🌐 Online"** mode
+3. Click **"Create Room"**
+4. Copy the invite link
+5. Open the link in another browser/tab
+6. Play! 🎉
+
+---
+
+## 🚀 Deploying to Vercel
+
+Vercel makes it super easy to deploy static sites. Here's how:
+
+### Option A: Deploy via Vercel Dashboard (Easiest)
+
+1. Go to [vercel.com](https://vercel.com) and sign up/log in
+2. Click **"Add New..."** → **"Project"**
+3. Import your GitHub repository:
+   - Click **"Import Git Repository"**
+   - Select your `pig-game` repo
+4. Configure the project:
+   - **Framework Preset:** Other
+   - **Root Directory:** `./` (leave as is)
+   - **Build Command:** (leave empty)
+   - **Output Directory:** `./` (leave as is)
+5. Click **"Deploy"**
+6. Wait for deployment (usually < 1 minute)
+7. Your site is live! 🎉
+
+### Option B: Deploy via Vercel CLI
+
+1. Install Vercel CLI:
+```bash
+npm install -g vercel
+```
+
+2. Navigate to your project:
+```bash
+cd pig-game
+```
+
+3. Deploy:
+```bash
+vercel
+```
+
+4. Follow the prompts:
+   - Set up and deploy? `Y`
+   - Which scope? (select your account)
+   - Link to existing project? `N`
+   - Project name? `pig-game` (or your choice)
+   - Directory? `./`
+   - Override settings? `N`
+
+5. Your site is deployed! The CLI will show your URL.
+
+### Option C: Deploy via GitHub Integration
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Click **"Add New..."** → **"Project"**
+4. Connect your GitHub account
+5. Select the `pig-game` repository
+6. Click **"Deploy"**
+
+Now every push to `main` will auto-deploy!
+
+### Custom Domain (Optional)
+
+1. In Vercel dashboard, go to your project
+2. Click **"Settings"** → **"Domains"**
+3. Add your custom domain
+4. Follow DNS configuration instructions
+
+---
+
+## 🔧 Configuration Options
+
+### Winning Score
+Change the default winning score by modifying the input value in the UI, or edit `index.html`:
+```html
+<input type="number" id="winning-score" value="100" ...>
+```
+
+### AI Difficulty Levels
+
+| Level | Strategy | Hold Threshold |
+|-------|----------|----------------|
+| Cautious Carl | Very safe | ~12 points |
+| Balanced Betty | Moderate | ~18 points |
+| Risky Rick | Aggressive | ~28 points |
+| Optimal Otto | Adaptive | Based on game state |
+
+### Speed Mode Timer
+Modify the timer duration in `js/game.js`:
+```javascript
+state.timerCleanup = UI.startTimer(state.activePlayer, 30, () => { // 30 seconds
+```
+
+---
+
+## 🎯 Tech Stack
+
+- **HTML5** - Semantic markup
+- **CSS3** - Modern styling, animations, CSS Grid/Flexbox
+- **Vanilla JavaScript** - ES6 modules, no frameworks
+- **Firebase** - Realtime Database for multiplayer
+- **Vercel** - Hosting and deployment
+
+---
+
+## 🤝 Contributing
+
+Found a bug? Want to add a feature? PRs are welcome!
+
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+## 📋 Future Ideas
+
+- [ ] Sound effects
+- [ ] Dark/light theme toggle
+- [ ] Player name customization
+- [ ] Match history
+- [ ] Achievements system
+- [ ] Spectator mode
+- [ ] Tournament brackets
+
+---
+
+## 📜 License
+
+MIT License - do whatever you want with it!
+
+---
+
+## 🙏 Credits
+
+- Game concept: Traditional Pig dice game (circa 1945)
+- Inspired by: Jonas Schmedtmann's JavaScript course
+- Built with: ☕ and questionable life choices
+
+---
+
+<p align="center">
+  <b>May your rolls be high and your ones be few! 🐷🎲</b>
+</p>
 
 ---
 
 ## 📞 Contact
 
-Got questions? Found a game-breaking bug? Just want to chat about pigs?
-
 - GitHub: [@yasinm1378](https://github.com/yasinm1378)
-- Issues: [Report here](https://github.com/yasinm1378/pig-game/issues)
-
----
-
-<div align="center">
-
-### 🎮 Ready to Play?
-
-**[PLAY NOW](https://yasinm1378.github.io/pig-game)** | **[Report Bug](https://github.com/yasinm1378/pig-game/issues)** | **[Request Feature](https://github.com/yasinm1378/pig-game/issues)**
-
-</div>
+- Issues: [Report bugs here](https://github.com/yasinm1378/pig-game/issues)
