@@ -15,7 +15,7 @@ const firebaseConfig = {
   projectId: "pig-game-online",
   storageBucket: "pig-game-online.firebasestorage.app",
   messagingSenderId: "276078031386",
-  appId: "1:276078031386:web:872bf3c27ea0b9344e57a3",
+  appId: "1:276078031386:web:872bf3c27ea0b9344e57a3"
 };
 
 // Module state
