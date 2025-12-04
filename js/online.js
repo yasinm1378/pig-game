@@ -8,14 +8,14 @@ import * as Game from './game.js';
 
 // Firebase configuration
 // ⚠️ IMPORTANT: Replace with your own Firebase config!
-const FIREBASE_CONFIG = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+const firebaseConfig = {
+  apiKey: "AIzaSyCVoT1prV36dogEfuCUku48lQMIC8UBCLQ",
+  authDomain: "pig-game-online.firebaseapp.com",
+  databaseURL: "https://pig-game-online-default-rtdb.firebaseio.com",
+  projectId: "pig-game-online",
+  storageBucket: "pig-game-online.firebasestorage.app",
+  messagingSenderId: "276078031386",
+  appId: "1:276078031386:web:872bf3c27ea0b9344e57a3",
 };
 
 // Module state
