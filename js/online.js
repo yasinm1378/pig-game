@@ -40,6 +40,7 @@ let localPlayerId = null; // 0 = host, 1 = guest
 let isHost = false;
 let initialized = false;
 let cleanupListeners = [];
+let lastProcessedAction = null; // Track last processed action to avoid duplicates
 
 /**
  * Initialize Firebase
@@ -126,6 +127,7 @@ export async function createRoom() {
     currentRoom = roomCode;
     localPlayerId = 0;
     isHost = true;
+    lastProcessedAction = null; // Reset action tracking
 
     // Set up presence
     setupPresence();
@@ -191,6 +193,7 @@ export async function joinRoom(roomCode) {
     currentRoom = roomCode;
     localPlayerId = 1;
     isHost = false;
+    lastProcessedAction = null; // Reset action tracking
 
     // Set up presence
     setupPresence();
@@ -235,9 +238,11 @@ function setupPresence() {
   // Update last seen periodically
   const presenceInterval = setInterval(() => {
     if (roomRef) {
-      presenceRef.update({
-        lastSeen: firebase.database.ServerValue.TIMESTAMP,
-      });
+      presenceRef
+        .update({
+          lastSeen: firebase.database.ServerValue.TIMESTAMP,
+        })
+        .catch(() => {}); // Ignore errors if room is gone
     }
   }, 10000);
 
@@ -267,11 +272,10 @@ function setupRoomListeners() {
         setTimeout(() => UI.updateWaitingText("", false), 2000);
 
         // Initialize game locally - NO broadcast!
-        // The guest joining already updated Firebase state
         Game.init({
           gameMode: "online",
           winningScore: UI.getWinningScore(),
-          broadcast: false, // Don't broadcast - just start locally
+          broadcast: false,
         });
       } else if (guest && !guest.connected && currentRoom) {
         UI.showToast("Opponent disconnected", "warning");
@@ -299,37 +303,37 @@ function setupRoomListeners() {
   );
 
   // Listen for actions from opponent
-  const actionListener = roomRef
-    .child("lastAction")
-    .on("value", async (snapshot) => {
-      const action = snapshot.val();
-      if (!action) return;
+  const actionListener = roomRef.child("lastAction").on("value", (snapshot) => {
+    const action = snapshot.val();
+    if (!action) return;
 
-      // Ignore own actions
-      if (action.player === localPlayerId) return;
+    // Ignore own actions
+    if (action.player === localPlayerId) return;
 
-      // Use a processed flag to avoid duplicate processing
-      // Store the last processed action ID
-      const actionId = `${action.type}-${action.player}-${action.timestamp}`;
-      if (actionListener.lastProcessed === actionId) return;
-      actionListener.lastProcessed = actionId;
+    // Create unique action ID to prevent duplicate processing
+    const actionId = `${action.type}-${action.player}-${JSON.stringify(
+      action.diceValue || action.heldScore || ""
+    )}`;
 
-      // Process opponent's action
-      if (action.type === "roll") {
-        await Game.handleOpponentRoll(action.diceValue);
-      } else if (action.type === "hold") {
-        Game.handleOpponentHold(action.heldScore);
-      } else if (action.type === "newGame") {
-        // Opponent started new game - init locally WITHOUT broadcasting back
-        Game.init({
-          gameMode: "online",
-          winningScore: UI.getWinningScore(),
-          broadcast: false, // Don't broadcast back!
-        });
-        UI.showToast("Opponent started a new game", "info");
-      }
-    });
-  actionListener.lastProcessed = null;
+    // Skip if we already processed this action
+    if (lastProcessedAction === actionId) return;
+    lastProcessedAction = actionId;
+
+    // Process opponent's action
+    if (action.type === "roll") {
+      Game.handleOpponentRoll(action.diceValue);
+    } else if (action.type === "hold") {
+      Game.handleOpponentHold(action.heldScore);
+    } else if (action.type === "newGame") {
+      // Opponent started new game - init locally WITHOUT broadcasting back
+      Game.init({
+        gameMode: "online",
+        winningScore: UI.getWinningScore(),
+        broadcast: false,
+      });
+      UI.showToast("Opponent started a new game", "info");
+    }
+  });
 
   cleanupListeners.push(() =>
     roomRef.child("lastAction").off("value", actionListener)
@@ -366,7 +370,7 @@ export async function sendRoll(diceValue) {
         type: "roll",
         player: localPlayerId,
         diceValue: diceValue,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        timestamp: Date.now(), // Use client timestamp for uniqueness
       },
       "gameState/currentScore": gameState.currentScore,
       "gameState/activePlayer": gameState.activePlayer,
@@ -391,7 +395,7 @@ export async function sendHold(heldScore) {
         type: "hold",
         player: localPlayerId,
         heldScore: heldScore,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        timestamp: Date.now(),
       },
       "gameState/scores": gameState.scores,
       "gameState/currentScore": 0,
@@ -421,7 +425,7 @@ export async function sendNewGame() {
       lastAction: {
         type: "newGame",
         player: localPlayerId,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        timestamp: Date.now(),
       },
       gameState: {
         scores: [0, 0],
@@ -455,6 +459,7 @@ export async function leaveRoom() {
     currentRoom = null;
     localPlayerId = null;
     isHost = false;
+    lastProcessedAction = null;
 
     // Update URL
     updateURLWithRoom(null);
