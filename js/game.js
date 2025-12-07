@@ -398,6 +398,11 @@ function aiHold() {
  * @param {object} newState - State from server
  */
 export function applyOnlineState(newState) {
+  // Check if this is a new winner announcement
+  const hadWinner =
+    !state.playing && state.scores.some((s) => s >= state.winningScore);
+  const hasNewWinner = newState.winner !== undefined && !hadWinner;
+
   state.scores = [...newState.scores];
   state.currentScore = newState.currentScore;
   state.activePlayer = newState.activePlayer;
@@ -415,6 +420,24 @@ export function applyOnlineState(newState) {
 
   if (!state.playing && newState.winner !== undefined) {
     UI.setWinner(newState.winner);
+
+    // Update stats only once when winner is first announced
+    if (hasNewWinner) {
+      stats.gamesPlayed++;
+      if (newState.winner === 0) {
+        stats.p1Wins++;
+      } else {
+        stats.p2Wins++;
+      }
+      Storage.set("pigGameStats", stats);
+      UI.updateStatsDisplay(stats);
+
+      // Show win message and confetti
+      const winnerLabel =
+        newState.winner === state.localPlayer ? "You Win!" : "Opponent Wins!";
+      UI.showMessage("🏆", winnerLabel, 3000);
+      createConfetti();
+    }
   }
 }
 
@@ -423,16 +446,23 @@ export function applyOnlineState(newState) {
  * @param {number} diceValue - The value opponent rolled
  */
 export async function handleOpponentRoll(diceValue) {
+  // Ensure we're showing the opponent as active (they're the one rolling)
+  const opponentPlayer = state.activePlayer;
+
   UI.showDice();
   await UI.animateDiceRoll();
   UI.renderDice(diceValue);
 
   if (diceValue !== 1) {
     state.currentScore += diceValue;
-    UI.updateCurrentScore(state.activePlayer, state.currentScore);
+    UI.updateCurrentScore(opponentPlayer, state.currentScore);
   } else {
     UI.animateRolledOne();
     UI.showMessage("😱", "Opponent rolled a 1!");
+
+    // Reset current score immediately for clean UI
+    state.currentScore = 0;
+    UI.updateCurrentScore(opponentPlayer, 0);
 
     setTimeout(() => {
       switchPlayer();
@@ -445,11 +475,19 @@ export async function handleOpponentRoll(diceValue) {
  * @param {number} heldScore - Score that was held
  */
 export function handleOpponentHold(heldScore) {
-  state.scores[state.activePlayer] += heldScore;
-  UI.updateScore(state.activePlayer, state.scores[state.activePlayer], true);
+  // The active player is the opponent who just held
+  const opponentPlayer = state.activePlayer;
 
-  if (state.scores[state.activePlayer] >= state.winningScore) {
-    endGame(state.activePlayer);
+  state.scores[opponentPlayer] += heldScore;
+  state.currentScore = 0;
+
+  UI.updateScore(opponentPlayer, state.scores[opponentPlayer], true);
+  UI.updateCurrentScore(opponentPlayer, 0);
+
+  if (state.scores[opponentPlayer] >= state.winningScore) {
+    // Don't call endGame here - let the gameState listener handle it
+    // to avoid duplicate stat updates
+    state.playing = false;
   } else {
     switchPlayer();
   }

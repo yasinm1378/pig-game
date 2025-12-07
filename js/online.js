@@ -287,12 +287,15 @@ function setupRoomListeners() {
     );
   }
 
-  // Listen for game state changes
+  // Listen for game state changes (only for initial sync and winner detection)
   const stateListener = roomRef.child("gameState").on("value", (snapshot) => {
     const state = snapshot.val();
     if (state) {
-      // Only apply if game has started
-      if (state.playing || state.winner !== undefined) {
+      // Only apply state sync in specific cases to avoid double-updates:
+      // 1. Game just started (initial sync)
+      // 2. Winner detected (game ended)
+      // Action-based updates are handled by the lastAction listener
+      if (state.winner !== undefined) {
         Game.applyOnlineState(state);
       }
     }
@@ -310,10 +313,9 @@ function setupRoomListeners() {
     // Ignore own actions
     if (action.player === localPlayerId) return;
 
-    // Create unique action ID to prevent duplicate processing
-    const actionId = `${action.type}-${action.player}-${JSON.stringify(
-      action.diceValue || action.heldScore || ""
-    )}`;
+    // Create unique action ID using timestamp to prevent duplicate processing
+    // This ensures consecutive identical rolls (e.g., two 6s) are both processed
+    const actionId = `${action.type}-${action.player}-${action.timestamp}`;
 
     // Skip if we already processed this action
     if (lastProcessedAction === actionId) return;
