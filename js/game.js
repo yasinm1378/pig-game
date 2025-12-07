@@ -398,26 +398,42 @@ function aiHold() {
  * @param {object} newState - State from server
  */
 export function applyOnlineState(newState) {
+  // Check for score changes to trigger animations
+  const score0Changed = newState.scores[0] !== state.scores[0];
+  const score1Changed = newState.scores[1] !== state.scores[1];
+
   // Check if this is a new winner announcement
   const hadWinner =
-    !state.playing && state.scores.some((s) => s >= state.winningScore);
+    !state.playing &&
+    (state.scores[0] >= state.winningScore ||
+      state.scores[1] >= state.winningScore);
   const hasNewWinner = newState.winner !== undefined && !hadWinner;
 
+  // Update local state
   state.scores = [...newState.scores];
   state.currentScore = newState.currentScore;
   state.activePlayer = newState.activePlayer;
   state.playing = newState.playing;
+  if (newState.winningScore) {
+    state.winningScore = newState.winningScore;
+  }
 
-  // Update UI
-  UI.updateScore(0, state.scores[0]);
-  UI.updateScore(1, state.scores[1]);
+  // Update UI with animations for score changes
+  UI.updateScore(0, state.scores[0], score0Changed);
+  UI.updateScore(1, state.scores[1], score1Changed);
   UI.updateCurrentScore(state.activePlayer, state.currentScore);
+
+  // Also clear the other player's current score display
+  const otherPlayer = state.activePlayer === 0 ? 1 : 0;
+  UI.updateCurrentScore(otherPlayer, 0);
+
   UI.setActivePlayer(state.activePlayer);
 
-  // Update button states
+  // Update button states based on whose turn it is
   const canAct = isLocalPlayerTurn() && state.playing;
   UI.setButtonsEnabled(canAct, canAct);
 
+  // Handle winner
   if (!state.playing && newState.winner !== undefined) {
     UI.setWinner(newState.winner);
 
@@ -446,27 +462,17 @@ export function applyOnlineState(newState) {
  * @param {number} diceValue - The value opponent rolled
  */
 export async function handleOpponentRoll(diceValue) {
-  // Ensure we're showing the opponent as active (they're the one rolling)
-  const opponentPlayer = state.activePlayer;
-
   UI.showDice();
   await UI.animateDiceRoll();
   UI.renderDice(diceValue);
 
   if (diceValue !== 1) {
-    state.currentScore += diceValue;
-    UI.updateCurrentScore(opponentPlayer, state.currentScore);
+    // Don't update state here - let applyOnlineState handle it
+    // Just show the dice result
   } else {
     UI.animateRolledOne();
     UI.showMessage("😱", "Opponent rolled a 1!");
-
-    // Reset current score immediately for clean UI
-    state.currentScore = 0;
-    UI.updateCurrentScore(opponentPlayer, 0);
-
-    setTimeout(() => {
-      switchPlayer();
-    }, 1500);
+    // switchPlayer will be called by applyOnlineState when Firebase state updates
   }
 }
 
@@ -475,22 +481,8 @@ export async function handleOpponentRoll(diceValue) {
  * @param {number} heldScore - Score that was held
  */
 export function handleOpponentHold(heldScore) {
-  // The active player is the opponent who just held
-  const opponentPlayer = state.activePlayer;
-
-  state.scores[opponentPlayer] += heldScore;
-  state.currentScore = 0;
-
-  UI.updateScore(opponentPlayer, state.scores[opponentPlayer], true);
-  UI.updateCurrentScore(opponentPlayer, 0);
-
-  if (state.scores[opponentPlayer] >= state.winningScore) {
-    // Don't call endGame here - let the gameState listener handle it
-    // to avoid duplicate stat updates
-    state.playing = false;
-  } else {
-    switchPlayer();
-  }
+  // Just show the animation - applyOnlineState will handle the actual state update
+  // The bump animation will be triggered when applyOnlineState calls updateScore
 }
 
 /**

@@ -287,17 +287,11 @@ function setupRoomListeners() {
     );
   }
 
-  // Listen for game state changes (only for initial sync and winner detection)
+  // Listen for game state changes - this is the source of truth for all scores
   const stateListener = roomRef.child("gameState").on("value", (snapshot) => {
     const state = snapshot.val();
-    if (state) {
-      // Only apply state sync in specific cases to avoid double-updates:
-      // 1. Game just started (initial sync)
-      // 2. Winner detected (game ended)
-      // Action-based updates are handled by the lastAction listener
-      if (state.winner !== undefined) {
-        Game.applyOnlineState(state);
-      }
+    if (state && (state.playing || state.winner !== undefined)) {
+      Game.applyOnlineState(state);
     }
   });
 
